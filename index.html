@@ -1,10 +1,786 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColdGuard: Project Proposal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            light: '#fde68a', // amber-200
+                            DEFAULT: '#d97706', // amber-600
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Chosen Palette: Cold Chain Blue (Brand) with Amber/Orange accents (Alerts/Data). Background is slate-50 (warm neutral light). -->
+    <!-- Application Structure Plan: A vertical scrolling narrative divided into logical "Modules".
+         1. Hero: Hook and stats.
+         2. Blueprint: Interactive Architecture diagram (HTML/CSS) to explain the Pipeline.
+         3. Warehouse: Visual Schema Explorer for the Data Modeling component.
+         4. Mining: Interactive Simulation to prove the ML concepts (Anomaly/Classification).
+         5. Logistics: 21-Day Plan and Roles.
+         Why? This structure mimics a technical pitch: Problem -> Tech Solution -> Implementation Details -> Execution Strategy.
+    -->
+    <!-- Visualization & Content Choices:
+         - Problem: Simple HTML counters.
+         - Architecture: CSS Grid layout with JS click handlers to reveal R-stack details. (Goal: Organize/Inform)
+         - Warehouse: CSS Flexbox cards representing tables with connectors implied by layout. (Goal: Structure)
+         - Mining Demo: Chart.js Line chart with dynamic point styling to simulate Anomaly Detection. (Goal: Change/Demonstrate)
+         - Timeline: Chart.js Bar chart (horizontal) for Gantt view. (Goal: Plan)
+         - Confirming NO SVG/Mermaid.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .pipeline-node {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .pipeline-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .pipeline-node.active {
+            border-color: #0ea5e9;
+            background-color: #f0f9ff;
+        }
+        /* Custom scrollbar for code blocks */
+        .code-block::-webkit-scrollbar {
+            height: 6px;
+        }
+        .code-block::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .code-block::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
 </head>
-<body>
-$END$
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900">
+
+<!-- Navbar -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <i class="fa-solid fa-snowflake text-brand-600 text-2xl mr-3"></i>
+                <span class="font-bold text-xl tracking-tight text-slate-900">ColdGuard <span class="text-xs font-normal text-slate-500 ml-1">R-Based Analytics Suite</span></span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#overview" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition">Overview</a>
+                <a href="#architecture" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition">Architecture</a>
+                <a href="#warehouse" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition">Warehouse</a>
+                <a href="#mining" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition">Mining Engine</a>
+                <a href="#execution" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition">21-Day Plan</a>
+            </div>
+            <div class="flex items-center">
+                <button class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-2 px-4 rounded-lg shadow-sm transition">
+                    View GitHub Repo
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="overview" class="pt-16 pb-12 md:pt-24 md:pb-20 px-4 max-w-7xl mx-auto">
+    <div class="text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-semibold uppercase tracking-wide mb-4 border border-brand-200">
+            Proposed Academic Project
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
+            End-to-End <span class="text-brand-600">Cold Chain Analytics</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+            A proposal for a scalable Data Warehousing and Data Mining system built entirely in <strong>R</strong>.
+            Designed to solve the $35B problem of perishable logistics waste through real-time anomaly detection and drift analysis.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                    <i class="fa-solid fa-server text-4xl text-brand-600"></i>
+                </div>
+                <p class="text-sm text-slate-500 font-medium">Core Tech</p>
+                <h3 class="text-xl font-bold text-slate-900 mt-1">Data Warehousing</h3>
+                <p class="text-sm text-slate-600 mt-2">Star Schema, SCD Type 2, ETL Pipelines via <code class="bg-slate-100 px-1 rounded text-brand-700">targets</code>.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                    <i class="fa-solid fa-brain text-4xl text-accent"></i>
+                </div>
+                <p class="text-sm text-slate-500 font-medium">Intelligence</p>
+                <h3 class="text-xl font-bold text-slate-900 mt-1">Data Mining</h3>
+                <p class="text-sm text-slate-600 mt-2">Anomaly Detection, Drift Analysis, Risk Classification via <code class="bg-slate-100 px-1 rounded text-brand-700">tidymodels</code>.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                    <i class="fa-solid fa-calendar-check text-4xl text-emerald-600"></i>
+                </div>
+                <p class="text-sm text-slate-500 font-medium">Execution</p>
+                <h3 class="text-xl font-bold text-slate-900 mt-1">3 Weeks, 3 Roles</h3>
+                <p class="text-sm text-slate-600 mt-2">Clear division of labor for a realistic, deployable MVP.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture Section -->
+<section id="architecture" class="py-16 bg-white border-y border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-900">System Architecture</h2>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl">
+                The architecture leverages the R ecosystem's strengths for both ETL and Analysis. Click on any stage below to see the specific R technologies and logic proposed.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Interactive Diagram (Left 2/3) -->
+            <div class="lg:col-span-2 space-y-4">
+                <!-- Stage 1 -->
+                <div class="pipeline-node p-5 rounded-lg border-2 border-slate-200 bg-slate-50" onclick="showArchDetail('ingestion', this)">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="bg-indigo-100 p-3 rounded-lg mr-4">
+                                <i class="fa-solid fa-satellite-dish text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">1. Data Ingestion</h4>
+                                <p class="text-xs text-slate-500">IoT Streams & ERP Logs</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="flex justify-center h-6">
+                    <div class="w-0.5 bg-slate-300"></div>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="pipeline-node p-5 rounded-lg border-2 border-slate-200 bg-slate-50" onclick="showArchDetail('etl', this)">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fa-solid fa-filter text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">2. ETL & Processing</h4>
+                                <p class="text-xs text-slate-500">Cleaning, SCD Handling, Validation</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="flex justify-center h-6">
+                    <div class="w-0.5 bg-slate-300"></div>
+                </div>
+
+                <!-- Stage 3 (Split) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="pipeline-node p-5 rounded-lg border-2 border-slate-200 bg-slate-50" onclick="showArchDetail('warehouse', this)">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="bg-emerald-100 p-3 rounded-lg mb-2">
+                                <i class="fa-solid fa-database text-emerald-600"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Data Warehouse</h4>
+                            <p class="text-xs text-slate-500">Star Schema</p>
+                        </div>
+                    </div>
+                    <div class="pipeline-node p-5 rounded-lg border-2 border-slate-200 bg-slate-50" onclick="showArchDetail('mining', this)">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="bg-purple-100 p-3 rounded-lg mb-2">
+                                <i class="fa-solid fa-microchip text-purple-600"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Mining Engine</h4>
+                            <p class="text-xs text-slate-500">Drift & Anomaly</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Panel (Right 1/3) -->
+            <div class="lg:col-span-1 bg-slate-900 text-slate-300 rounded-xl p-6 shadow-xl flex flex-col justify-center min-h-[400px]">
+                <div id="arch-content">
+                    <div class="text-center opacity-50">
+                        <i class="fa-regular fa-hand-pointer text-4xl mb-4"></i>
+                        <p>Select a stage on the left to view R implementation details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Data Warehouse Section -->
+<section id="warehouse" class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10">
+            <h2 class="text-3xl font-bold text-slate-900">Data Warehouse Design</h2>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl">
+                We propose a classical Star Schema optimized for time-series aggregation. A key resume highlight is the implementation of <strong>SCD Type 2</strong> to track truck sensor calibration changes over time.
+            </p>
+        </div>
+
+        <!-- Schema Viz -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 overflow-x-auto">
+            <div class="min-w-[800px] flex justify-center items-start space-x-12">
+
+                <!-- Dimension Tables (Left) -->
+                <div class="space-y-6 mt-12">
+                    <div class="w-64 border border-slate-300 rounded-lg bg-slate-50 shadow-sm">
+                        <div class="bg-slate-200 px-4 py-2 border-b border-slate-300 font-bold text-xs text-slate-700 uppercase">Dim_Time</div>
+                        <ul class="p-4 text-sm space-y-1 text-slate-600 font-mono">
+                            <li class="font-bold text-brand-700">time_key (PK)</li>
+                            <li>full_timestamp</li>
+                            <li>hour_of_day</li>
+                            <li>shift_type</li>
+                        </ul>
+                    </div>
+                    <div class="w-64 border border-slate-300 rounded-lg bg-slate-50 shadow-sm ring-2 ring-accent ring-opacity-50">
+                        <div class="bg-accent-light/30 px-4 py-2 border-b border-slate-300 font-bold text-xs text-accent-700 uppercase flex justify-between">
+                            <span>Dim_Truck (SCD2)</span>
+                            <i class="fa-solid fa-history" title="History Tracking"></i>
+                        </div>
+                        <ul class="p-4 text-sm space-y-1 text-slate-600 font-mono">
+                            <li class="font-bold text-brand-700">truck_surrogate_key (PK)</li>
+                            <li>truck_id (Natural Key)</li>
+                            <li>sensor_model</li>
+                            <li>maintenance_date</li>
+                            <li class="text-accent-700 bg-accent-light/20 px-1 rounded">valid_from</li>
+                            <li class="text-accent-700 bg-accent-light/20 px-1 rounded">valid_to</li>
+                            <li class="text-accent-700 bg-accent-light/20 px-1 rounded">is_current</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fact Table (Center) -->
+                <div class="w-72 border-2 border-brand-500 rounded-lg bg-white shadow-lg z-10">
+                    <div class="bg-brand-600 px-4 py-3 border-b border-brand-700 font-bold text-sm text-white uppercase text-center">
+                        Fact_Sensor_Telemetry
+                    </div>
+                    <ul class="p-5 text-sm space-y-2 text-slate-700 font-mono">
+                        <li class="font-bold text-brand-600 border-b border-dashed pb-1">fact_id (PK)</li>
+                        <li class="text-slate-500 italic">truck_surrogate_key (FK)</li>
+                        <li class="text-slate-500 italic">route_key (FK)</li>
+                        <li class="text-slate-500 italic">product_key (FK)</li>
+                        <li class="text-slate-500 italic">time_key (FK)</li>
+                        <li class="pt-2 font-semibold">temperature_c</li>
+                        <li class="font-semibold">humidity_pct</li>
+                        <li class="font-semibold">vibration_level</li>
+                        <li class="font-semibold">door_open_duration</li>
+                    </ul>
+                </div>
+
+                <!-- Dimension Tables (Right) -->
+                <div class="space-y-6 mt-12">
+                    <div class="w-64 border border-slate-300 rounded-lg bg-slate-50 shadow-sm">
+                        <div class="bg-slate-200 px-4 py-2 border-b border-slate-300 font-bold text-xs text-slate-700 uppercase">Dim_Route</div>
+                        <ul class="p-4 text-sm space-y-1 text-slate-600 font-mono">
+                            <li class="font-bold text-brand-700">route_key (PK)</li>
+                            <li>origin_city</li>
+                            <li>dest_city</li>
+                            <li>avg_transit_hours</li>
+                        </ul>
+                    </div>
+                    <div class="w-64 border border-slate-300 rounded-lg bg-slate-50 shadow-sm">
+                        <div class="bg-slate-200 px-4 py-2 border-b border-slate-300 font-bold text-xs text-slate-700 uppercase">Dim_Product</div>
+                        <ul class="p-4 text-sm space-y-1 text-slate-600 font-mono">
+                            <li class="font-bold text-brand-700">product_key (PK)</li>
+                            <li>sku_name</li>
+                            <li>category</li>
+                            <li>min_safe_temp</li>
+                            <li>max_safe_temp</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 text-sm text-slate-500 text-center">
+            *SCD Type 2 on Dim_Truck allows us to correlate temperature spikes with specific maintenance intervals or sensor hardware versions.
+        </div>
+    </div>
+</section>
+
+<!-- Data Mining Section -->
+<section id="mining" class="py-16 bg-white border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+            <div class="max-w-2xl">
+                <h2 class="text-3xl font-bold text-slate-900">Mining Engine Simulation</h2>
+                <p class="mt-4 text-lg text-slate-600">
+                    This section demonstrates the three core algorithms. The interactive chart simulates a truck's journey. Toggle the algorithms to see how the system identifies issues.
+                </p>
+            </div>
+
+            <!-- Controls -->
+            <div class="mt-6 md:mt-0 flex space-x-2">
+                <button onclick="toggleAlgorithm('normal')" class="algo-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-brand-100 text-brand-800 border border-brand-200 active-algo" data-algo="normal">Raw Data</button>
+                <button onclick="toggleAlgorithm('anomaly')" class="algo-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-white text-slate-600 border border-slate-300 hover:bg-slate-50" data-algo="anomaly">Anomaly (Isolation Forest)</button>
+                <button onclick="toggleAlgorithm('drift')" class="algo-btn px-4 py-2 rounded-lg text-sm font-medium transition bg-white text-slate-600 border border-slate-300 hover:bg-slate-50" data-algo="drift">Drift (KS Test)</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Chart Area -->
+            <div class="lg:col-span-2 bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-inner">
+                <div class="chart-container">
+                    <canvas id="miningChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Explanation Area -->
+            <div class="lg:col-span-1 space-y-6">
+                <div id="algo-desc-normal" class="algo-desc block">
+                    <h3 class="font-bold text-slate-900 text-lg">Live Telemetry Stream</h3>
+                    <p class="text-slate-600 mt-2 text-sm">
+                        Displaying real-time temperature (°C) from Truck #402. The safe range is -5°C to 2°C.
+                    </p>
+                    <div class="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <div class="text-xs font-bold text-blue-700 uppercase mb-1">Status</div>
+                        <div class="text-2xl font-bold text-slate-900">Monitoring...</div>
+                    </div>
+                </div>
+
+                <div id="algo-desc-anomaly" class="algo-desc hidden">
+                    <h3 class="font-bold text-slate-900 text-lg">Unsupervised Anomaly Detection</h3>
+                    <p class="text-slate-600 mt-2 text-sm">
+                        <strong>Technique:</strong> Isolation Forest (R package `isotree`).
+                    </p>
+                    <p class="text-slate-600 mt-2 text-sm">
+                        The model isolates observations by randomly selecting a feature and identifying split values. Anomalies (spikes in red) require fewer splits to isolate.
+                    </p>
+                    <div class="mt-4 p-4 bg-red-50 border border-red-100 rounded-lg">
+                        <div class="text-xs font-bold text-red-700 uppercase mb-1">Alert</div>
+                        <div class="text-2xl font-bold text-red-700">3 Spikes Detected</div>
+                        <div class="text-xs text-red-600 mt-1">Check Compressor Unit</div>
+                    </div>
+                </div>
+
+                <div id="algo-desc-drift" class="algo-desc hidden">
+                    <h3 class="font-bold text-slate-900 text-lg">Data Drift Analysis</h3>
+                    <p class="text-slate-600 mt-2 text-sm">
+                        <strong>Technique:</strong> Kolmogorov-Smirnov (KS) Test.
+                    </p>
+                    <p class="text-slate-600 mt-2 text-sm">
+                        Compares the distribution of current window (last 4 hours) vs. reference window (yesterday). Detecting gradual sensor failure before it breaks.
+                    </p>
+                    <div class="mt-4 p-4 bg-amber-50 border border-amber-100 rounded-lg">
+                        <div class="text-xs font-bold text-amber-700 uppercase mb-1">Drift Warning</div>
+                        <div class="text-2xl font-bold text-amber-700">p-value: 0.03</div>
+                        <div class="text-xs text-amber-600 mt-1">Distribution Shift Detected</div>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-200 pt-6">
+                    <h4 class="font-bold text-xs text-slate-500 uppercase">R Stack for Mining</h4>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded border border-slate-200 font-mono">tidymodels</span>
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded border border-slate-200 font-mono">isotree</span>
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded border border-slate-200 font-mono">dalex</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Execution Plan Section -->
+<section id="execution" class="py-16 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl font-bold">21-Day Execution Plan</h2>
+            <p class="mt-4 text-slate-400 max-w-2xl mx-auto">
+                A realistic roadmap dividing responsibilities across Data Engineering, Data Science, and Application Development.
+            </p>
+        </div>
+
+        <!-- Gantt Chart Container -->
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 mb-12">
+            <div class="chart-container" style="height: 300px;">
+                <canvas id="ganttChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Role Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 hover:border-brand-500 transition">
+                <div class="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center mb-4 text-indigo-400 font-bold">DE</div>
+                <h3 class="font-bold text-lg mb-2">Member 1: Data Engineer</h3>
+                <ul class="text-sm text-slate-400 space-y-2 list-disc list-inside">
+                    <li>PostgreSQL Setup & Schema Design</li>
+                    <li>R `targets` Pipeline construction</li>
+                    <li>SCD Type 2 Implementation</li>
+                    <li>Data Mocking Script generation</li>
+                </ul>
+            </div>
+            <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 hover:border-purple-500 transition">
+                <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center mb-4 text-purple-400 font-bold">DS</div>
+                <h3 class="font-bold text-lg mb-2">Member 2: ML Engineer</h3>
+                <ul class="text-sm text-slate-400 space-y-2 list-disc list-inside">
+                    <li>EDA & Feature Engineering</li>
+                    <li>Isolation Forest & Random Forest models</li>
+                    <li>Drift detection logic (KS Test)</li>
+                    <li>Model serialization (`vetiver`)</li>
+                </ul>
+            </div>
+            <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 hover:border-emerald-500 transition">
+                <div class="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 text-emerald-400 font-bold">FE</div>
+                <h3 class="font-bold text-lg mb-2">Member 3: Viz & Ops</h3>
+                <ul class="text-sm text-slate-400 space-y-2 list-disc list-inside">
+                    <li>Shiny Dashboard Development</li>
+                    <li>Plumber API endpoints</li>
+                    <li>Documentation & Presentation</li>
+                    <li>Docker containerization</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer / Deliverables -->
+<footer class="bg-white py-12 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0 text-center md:text-left">
+            <h4 class="font-bold text-slate-900 mb-2">Final Deliverables</h4>
+            <div class="flex space-x-4 text-sm text-slate-600">
+                <span class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> GitHub Repo</span>
+                <span class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> Shiny Dashboard</span>
+                <span class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> Technical Report</span>
+            </div>
+        </div>
+        <div class="text-center md:text-right">
+            <button class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-8 rounded-lg transition shadow-lg">
+                Start Project
+            </button>
+            <p class="text-xs text-slate-500 mt-2">Ready for deployment | R 4.3.0+</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript Logic -->
+<script>
+    // --- 1. Architecture Interaction Logic ---
+    const archDetails = {
+        ingestion: {
+            title: "1. Data Ingestion (IoT & ERP)",
+            content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed">We simulate two data streams. <strong>IoT Sensors</strong> transmit temp/humidity every 5 mins. <strong>ERP Systems</strong> provide manifest data (product types, routes).</p>
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                            <h5 class="text-xs text-indigo-400 font-bold mb-2">Key R Packages</h5>
+                            <ul class="text-xs text-slate-300 font-mono space-y-1">
+                                <li>• jsonlite (JSON parsing)</li>
+                                <li>• readr (CSV batch reads)</li>
+                                <li>• DBI / RPostgres (DB connection)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                            <h5 class="text-xs text-indigo-400 font-bold mb-2">Code Snippet Idea</h5>
+                            <pre class="code-block text-xs text-slate-300 font-mono overflow-x-auto whitespace-pre">stream_in <- function(file) {
+  jsonlite::stream_in(file(file), handler = function(df){
+    dbWriteTable(con, "staging_logs", df, append=T)
+  })
+}</pre>
+                        </div>
+                    </div>
+                `
+        },
+        etl: {
+            title: "2. ETL Pipeline & Quality",
+            content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed">The <code class="text-blue-400">targets</code> package orchestrates the pipeline, skipping steps if data hasn't changed. We handle SCD Type 2 logic here using <code class="text-blue-400">dplyr</code> joins.</p>
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                            <h5 class="text-xs text-blue-400 font-bold mb-2">Key R Packages</h5>
+                            <ul class="text-xs text-slate-300 font-mono space-y-1">
+                                <li>• targets (Pipeline Orchestration)</li>
+                                <li>• janitor (Cleaning names)</li>
+                                <li>• pointblank (Data Validation)</li>
+                            </ul>
+                        </div>
+                         <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                            <h5 class="text-xs text-blue-400 font-bold mb-2">Validation Logic</h5>
+                            <pre class="code-block text-xs text-slate-300 font-mono overflow-x-auto whitespace-pre">agent <- create_agent(tbl = staging) %>%
+  col_vals_between(vars(temp), -30, 30) %>%
+  interrogate()</pre>
+                        </div>
+                    </div>
+                `
+        },
+        warehouse: {
+            title: "3. Data Warehousing",
+            content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed">Data is normalized into a Star Schema. <strong>Fact</strong> tables contain measurements. <strong>Dimension</strong> tables contain context. We use PostgreSQL as the backend.</p>
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                            <h5 class="text-xs text-emerald-400 font-bold mb-2">Key Concepts</h5>
+                            <ul class="text-xs text-slate-300 font-mono space-y-1">
+                                <li>• Star Schema Design</li>
+                                <li>• Surrogate Keys</li>
+                                <li>• Materialized Views (for Aggregates)</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+        },
+        mining: {
+            title: "4. Mining Engine",
+            content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed">Models run daily on the Warehouse data. <code class="text-purple-400">tidymodels</code> provides a unified interface for training and evaluation.</p>
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                            <h5 class="text-xs text-purple-400 font-bold mb-2">Key R Packages</h5>
+                            <ul class="text-xs text-slate-300 font-mono space-y-1">
+                                <li>• tidymodels (Framework)</li>
+                                <li>• isotree (Isolation Forest)</li>
+                                <li>• vetiver (Model Versioning)</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+        }
+    };
+
+    function showArchDetail(key, element) {
+        // Update UI State
+        document.querySelectorAll('.pipeline-node').forEach(el => {
+            el.classList.remove('active', 'border-brand-500', 'bg-brand-50');
+            el.classList.add('border-slate-200', 'bg-slate-50');
+        });
+        element.classList.remove('border-slate-200', 'bg-slate-50');
+        element.classList.add('active', 'border-brand-500', 'bg-brand-50');
+
+        // Update Content
+        const data = archDetails[key];
+        const contentDiv = document.getElementById('arch-content');
+        contentDiv.innerHTML = `
+                <div class="animate-fade-in">
+                    <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">${data.title}</h3>
+                    ${data.content}
+                </div>
+            `;
+    }
+
+    // --- 2. Chart.js Simulations ---
+
+    // Data Mining Chart (Line Chart with Anomalies)
+    let miningChartInstance = null;
+
+    function initMiningChart() {
+        const ctx = document.getElementById('miningChart').getContext('2d');
+
+        // Generate Mock Data (Sine wave + random noise)
+        const labels = Array.from({length: 50}, (_, i) => `${8 + Math.floor(i/4)}:${(i%4)*15}`.replace(':0', ':00'));
+        const baseData = labels.map((_, i) => Math.sin(i * 0.2) + (Math.random() * 1) - 2); // Hovering around -2C
+
+        // Introduce Anomaly (Spike)
+        const anomalyData = [...baseData];
+        anomalyData[35] = 4.5; // Spike
+        anomalyData[36] = 5.2; // Spike
+        anomalyData[37] = 3.8; // Spike
+
+        // Introduce Drift (Gradual increase)
+        const driftData = baseData.map((val, i) => val + (i > 25 ? (i-25)*0.2 : 0));
+
+        miningChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Internal Temp (°C)',
+                    data: baseData,
+                    borderColor: '#0ea5e9', // Brand 500
+                    backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    pointBackgroundColor: '#0ea5e9',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: {
+                        suggestedMin: -6,
+                        suggestedMax: 6,
+                        grid: { color: '#e2e8f0' },
+                        title: { display: true, text: 'Temperature (°C)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+
+        // Save data sets for toggling
+        miningChartInstance.mockData = {
+            normal: baseData,
+            anomaly: anomalyData,
+            drift: driftData
+        };
+    }
+
+    function toggleAlgorithm(algo) {
+        // UI Button State
+        document.querySelectorAll('.algo-btn').forEach(btn => {
+            if(btn.dataset.algo === algo) {
+                btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-300', 'hover:bg-slate-50');
+                btn.classList.add('bg-brand-100', 'text-brand-800', 'border-brand-200');
+            } else {
+                btn.classList.add('bg-white', 'text-slate-600', 'border-slate-300', 'hover:bg-slate-50');
+                btn.classList.remove('bg-brand-100', 'text-brand-800', 'border-brand-200');
+            }
+        });
+
+        // Text Description Toggle
+        document.querySelectorAll('.algo-desc').forEach(el => el.classList.add('hidden'));
+        document.getElementById(`algo-desc-${algo}`).classList.remove('hidden');
+
+        // Update Chart
+        const newData = miningChartInstance.mockData[algo];
+        miningChartInstance.data.datasets[0].data = newData;
+
+        if (algo === 'anomaly') {
+            miningChartInstance.data.datasets[0].pointBackgroundColor = newData.map(v => v > 2 ? '#ef4444' : '#0ea5e9');
+            miningChartInstance.data.datasets[0].pointRadius = newData.map(v => v > 2 ? 6 : 2);
+            miningChartInstance.data.datasets[0].borderColor = '#94a3b8';
+        } else if (algo === 'drift') {
+            miningChartInstance.data.datasets[0].pointBackgroundColor = newData.map((v, i) => i > 25 ? '#d97706' : '#0ea5e9');
+            miningChartInstance.data.datasets[0].pointRadius = 2;
+            miningChartInstance.data.datasets[0].borderColor = '#d97706';
+        } else {
+            miningChartInstance.data.datasets[0].pointBackgroundColor = '#0ea5e9';
+            miningChartInstance.data.datasets[0].pointRadius = 2;
+            miningChartInstance.data.datasets[0].borderColor = '#0ea5e9';
+        }
+
+        miningChartInstance.update();
+    }
+
+    // Execution Plan Chart (Gantt)
+    function initGanttChart() {
+        const ctx = document.getElementById('ganttChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3'],
+                datasets: [
+                    {
+                        label: 'Data Engineering (DB, ETL, Mock Data)',
+                        data: [[0, 7], [0, 3], [14, 16]], // Start, End days (Simplified logic)
+                        backgroundColor: '#6366f1', // Indigo
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    },
+                    {
+                        label: 'Data Science (Exploration, Models, Tuning)',
+                        data: [[4, 7], [7, 14], [14, 18]],
+                        backgroundColor: '#a855f7', // Purple
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    },
+                    {
+                        label: 'App Dev (Dashboard, API, Docs)',
+                        data: [[0, 2], [10, 14], [14, 21]],
+                        backgroundColor: '#10b981', // Emerald
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        min: 0,
+                        max: 21,
+                        title: { display: true, text: 'Days', color: '#94a3b8' },
+                        grid: { color: '#334155' },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#e2e8f0', font: { weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    legend: { labels: { color: '#e2e8f0' } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        initMiningChart();
+        initGanttChart();
+
+        // Set initial state for architecture
+        showArchDetail('ingestion', document.querySelector('.pipeline-node'));
+    });
+
+</script>
 </body>
 </html>
